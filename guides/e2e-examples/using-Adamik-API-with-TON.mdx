@@ -1,0 +1,136 @@
+---
+icon: square-code
+---
+
+This guide demonstrates how to create, sign, and broadcast a transaction using the Adamik API along with a TON signer. This tutorial is perfect for developers who want to leverage Adamikto power their TON workflow, ensuring secure and efficient transaction management.
+
+## Prerequisites
+
+- **Node.js** and **npm** installed
+- Basic understanding of TON blockchain and transaction workflows
+- Familiarity with the TON libraries (`@ton/crypto`, `@ton/ton`)
+
+## Step-by-Step Guide
+
+### 1. Setting Up the Environment
+
+Ensure you have the required TON libraries installed in your project:
+
+```bash
+npm install @ton/crypto @ton/ton node-fetch
+```
+
+### 2. Writing the Script
+
+Below is the script that handles the full transaction flow, from creating a wallet to broadcasting the signed transaction.
+
+```javascript
+import { mnemonicToPrivateKey, sign } from "@ton/crypto";
+import { WalletContractV4 } from "@ton/ton";
+
+// Replace with your wallet's mnemonic phrase
+const walletPhrase = "YOUR MNEMONIC HERE";
+const ADAMIK_API_KEY = "your-adamik-api-key"; // get it from https://dashboard.adamik.io
+const recipientAddress = "recipient address";
+
+async function main() {
+  // Generate a key pair from the mnemonic phrase
+  const keyPair = await mnemonicToPrivateKey(walletPhrase.split(" "));
+
+  // Define the workchain and create a wallet contract
+  let workchain = 0;
+  let wallet = WalletContractV4.create({
+    workchain,
+    publicKey: keyPair.publicKey,
+  });
+  const address = wallet.address.toString();
+
+  // Prepare the transaction request
+  const requestBody = {
+    transaction: {
+      data: {
+        chainId: "ton", // TON blockchain
+        mode: "transfer",
+        sender: address,
+        recipient: recipientAddress,
+        amount: Math.floor(Math.random() * (10000 - 2 + 1) + 2).toString(), // Random amount for testing
+        useMaxAmount: false,
+        fees: "0", // Set fees to 0 for now
+        gas: "0", // Gas is not required on TON
+        memo: "", // Optionally, add a memo
+        format: "hex",
+        validatorAddress: "",
+        params: {
+          pubKey: keyPair.publicKey.toString("hex"),
+        },
+      },
+    },
+  };
+
+  // Encode the transaction with Adamik API
+  const response = await fetch(
+    "https://api.adamik.io/api/ton/transaction/encode",
+    {
+      method: "POST",
+      headers: {
+        Authorization: ADAMIK_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    }
+  );
+
+  const json = await response.json();
+  console.log(`Encoded Transaction: ${json.transaction.encoded}`);
+
+  // Sign the encoded transaction
+  const signature = sign(
+    Buffer.from(json.transaction.encoded, "hex"),
+    keyPair.secretKey
+  ).toString("hex");
+  console.log(`Signature: ${signature}`);
+
+  // Prepare to broadcast the signed transaction
+  const broadcastRequestBody = {
+    transaction: {
+      data: json.transaction.data,
+      encoded: json.transaction.encoded,
+      signature: signature,
+    },
+  };
+
+  // Broadcast the transaction using Adamik API
+  const broadcastResponse = await fetch(
+    "https://api.adamik.io/api/ton/transaction/broadcast",
+    {
+      method: "POST",
+      headers: {
+        Authorization: ADAMIK_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(broadcastRequestBody),
+    }
+  );
+
+  const tonResponse = await broadcastResponse.json();
+  console.log("Transaction Result:", JSON.stringify(tonResponse, null, 2));
+}
+
+main();
+```
+
+### 3. Explanation
+
+- **Key Pair Generation**: The script generates a key pair from a mnemonic phrase using the `@ton/crypto` library, which is helpful for managing private keys and signing transactions on TON. Please note Adamik API doesn’t have the custody of the assets.
+- **Transaction Encoding**: The transaction details, such as sender, recipient, and amount, are passed to the Adamik API, which encodes the transaction for signing.
+- **Signing and Broadcasting**: The encoded transaction is signed using the private key, and the signed transaction is then broadcast to the TON blockchain via the Adamik API.
+
+### 4. Troubleshooting
+
+- **Invalid API Key**: Ensure your Adamik API key is correct and up to date.
+- **Network Issues**: Verify network availability and Adamik API status.
+- **Security Note**: Never hardcode sensitive information such as mnemonic phrases or private keys in your production environment.
+
+### 5. Get in Touch
+
+Connect with us through our [Discord Server](https://discord.gg/gsZJR2JfMR) or directly through [GitHub](https://github.com/AdamikHQ).

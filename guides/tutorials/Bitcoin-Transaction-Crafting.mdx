@@ -1,0 +1,157 @@
+---
+icon: book
+title: How to Craft a Bitcoin Transaction with Adamik
+sidebarTitle: "Bitcoin Transaction Crafting"
+---
+
+This guide provides step-by-step instructions for leveraging the Adamik API to construct Bitcoin transactions. Bitcoin utilizes the UTXO (Unspent Transaction Output) model, where multiple UTXOs may need to be aggregated to satisfy the desired transaction amount.
+
+In the example below, we use a single address as the sender, which contains multiple UTXOs. For scenarios involving wallets with multiple addresses, the Adamik API also supports extended public keys (xpub). This feature enables seamless handling of UTXOs across various addresses within the same wallet, offering enhanced flexibility for more complex transaction workflows.
+
+<Info>
+  Please note the following addresses are used for the example purpose only.
+</Info>
+
+### Step 1: Prepare Your Request
+
+To initiate the transaction, use the `/api/transaction/encode` endpoint with the following payload:
+
+```json
+{
+  "transaction": {
+    "data": {
+      "chainId": "bitcoin",
+      "mode": "transfer",
+      "sender": "bc1qekphvuz20qvdhkzywfe29r9vvtwxrszvaxzmqm",
+      "recipient": "bc1q2e00eecxtjlvuzf6dpm4leqjd2pem0xkfggw8j",
+      "amount": "490000"
+    }
+  }
+}
+```
+
+### Step 2: Response
+
+The API will respond with a hex-encoded PSBT (Partially Signed Bitcoin Transaction). Example:
+
+```plaintext
+70736274ff01009a020000000221f8c3f9a2e6db8c5273e67031d846ca77a9154c382521e541436bbaa67e601d0100000000fdffffff84beb7db39234cd25d33e0c664e6d4566c34b35c06f470ec9368adf0412e9a740000000000fdffffff02107a070000000000160014565efce7065cbece093a68775fe4126a839dbcd6bb07000000000000160014cd8376704a7818dbd8447272a28cac62dc61c04c000000000001011fff7d040000000000160014cd8376704a7818dbd8447272a28cac62dc61c04c0001011f1a0b030000000000160014cd8376704a7818dbd8447272a28cac62dc61c04c000000
+```
+
+### Step 3: Analyze the PSBT
+
+The PSBT contains details about the inputs and outputs used in the transaction.
+
+#### Inputs:
+
+```json
+{
+  "vin": [
+    {
+      "txid": "1d607ea6ba6b4341e52125384c15a977ca46d83170e673528cdbe6a2f9c3f821",
+      "vout": 1,
+      "sequence": 4294967293
+    },
+    {
+      "txid": "749a2e41f0ad6893ec70f4065cb3346c56d4e664c6e0335dd24c2339dbb7be84",
+      "vout": 0,
+      "sequence": 4294967293
+    }
+  ]
+}
+```
+
+#### Outputs:
+
+```json
+{
+  "vout": [
+    {
+      "value": 0.0049,
+      "scriptPubKey": {
+        "address": "bc1q2e00eecxtjlvuzf6dpm4leqjd2pem0xkfggw8j",
+        "type": "witness_v0_keyhash"
+      }
+    },
+    {
+      "value": 0.00001979,
+      "scriptPubKey": {
+        "address": "bc1qekphvuz20qvdhkzywfe29r9vvtwxrszvaxzmqm",
+        "type": "witness_v0_keyhash"
+      }
+    }
+  ]
+}
+```
+
+### Step 4: Signing the Transaction
+
+The PSBT provided by Adamik API must be signed with a compatible Bitcoin signer.
+
+Example of a signed transaction (hex-encoded):
+
+```plaintext
+70736274ff01009a020000000221f8c3f9a2e6db8c5273e67031d846ca77a9154c382521e541436bbaa67e601d0100000000fdffffff84beb7db39234cd25d33e0c664e6d4566c34b35c06f470ec9368adf0412e9a740000000000fdffffff02107a070000000000160014cd8376704a7818dbd8447272a28cac62dc61c04cbb07000000000000160014cd8376704a7818dbd8447272a28cac62dc61c04c000000000001011fff7d040000000000160014cd8376704a7818dbd8447272a28cac62dc61c04c01086b0247304402205f706f0eb2c89be45308cfd558dc1ee9694ba5f85f9ecb7b9dc8d36fffa284b30220182893f9479927ffa6100adfd648c145fc4be9a07523bbc6fd9c9c42889ae549012103d14c088f9a2f63f02173be720c7ced7f0cc254d7dea3d5bb4cef1d8ccc6103080001011f1a0b030000000000160014cd8376704a7818dbd8447272a28cac62dc61c04c01086c02483045022100e04d73abc886ecee4e0a7318cd730de745421c184ad89aeca5ea33d9cba471130220760e892cd78f190d18ae6d18d4e9f65865a0f1a6652229324f2c631d6a7afd63012103d14c088f9a2f63f02173be720c7ced7f0cc254d7dea3d5bb4cef1d8ccc610308000000
+```
+
+Please note that the signed transaction is the same as the PSBT, but with the signature added.
+Different signers may use different formats, so please refer to the documentation of the signer you are using.
+
+### Step 5: Finalize and Broadcast
+
+After signing, submit the transaction using the `/api/transaction/broadcast` endpoint.
+
+- Submit the original transaction intent.
+
+- Input the hex-encoded PSBT.
+
+- Add the signed BTC transaction in the signature field of the broadcast endpoint
+
+Example of a broadcast request:
+
+```json
+{
+  "transaction": {
+    "data": {
+      "chainId": "bitcoin",
+      "mode": "transfer",
+      "sender": "bc1qekphvuz20qvdhkzywfe29r9vvtwxrszvaxzmqm",
+      "recipient": "bc1q2e00eecxtjlvuzf6dpm4leqjd2pem0xkfggw8j",
+      "amount": "490000"
+    },
+    "encoded": "70736274ff01009a020000000221f8c3f9a2e6db8c5273e67031d846ca77a9154c382521e541436bbaa67e601d0100000000fdffffff84beb7db39234cd25d33e0c664e6d4566c34b35c06f470ec9368adf0412e9a740000000000fdffffff02107a070000000000160014cd8376704a7818dbd8447272a28cac62dc61c04cbb07000000000000160014cd8376704a7818dbd8447272a28cac62dc61c04c000000000001011fff7d040000000000160014cd8376704a7818dbd8447272a28cac62dc61c04c01086b0247304402205f706f0eb2c89be45308cfd558dc1ee9694ba5f85f9ecb7b9dc8d36fffa284b30220182893f9479927ffa6100adfd648c145fc4be9a07523bbc6fd9c9c42889ae549012103d14c088f9a2f63f02173be720c7ced7f0cc254d7dea3d5bb4cef1d8ccc6103080001011f1a0b030000000000160014cd8376704a7818dbd8447272a28cac62dc61c04c01086c02483045022100e04d73abc886ecee4e0a7318cd730de745421c184ad89aeca5ea33d9cba471130220760e892cd78f190d18ae6d18d4e9f65865a0f1a6652229324f2c631d6a7afd63012103d14c088f9a2f63f02173be720c7ced7f0cc254d7dea3d5bb4cef1d8ccc610308000000",
+    "signature": "70736274ff01009a020000000221f8c3f9a2e6db8c5273e67031d846ca77a9154c382521e541436bbaa67e601d0100000000fdffffff84beb7db39234cd25d33e0c664e6d4566c34b35c06f470ec9368adf0412e9a740000000000fdffffff02107a070000000000160014cd8376704a7818dbd8447272a28cac62dc61c04cbb07000000000000160014cd8376704a7818dbd8447272a28cac62dc61c04c000000000001011fff7d040000000000160014cd8376704a7818dbd8447272a28cac62dc61c04c01086b0247304402205f706f0eb2c89be45308cfd558dc1ee9694ba5f85f9ecb7b9dc8d36fffa284b30220182893f9479927ffa6100adfd648c145fc4be9a07523bbc6fd9c9c42889ae549012103d14c088f9a2f63f02173be720c7ced7f0cc254d7dea3d5bb4cef1d8ccc6103080001011f1a0b030000000000160014cd8376704a7818dbd8447272a28cac62dc61c04c01086c02483045022100e04d73abc886ecee4e0a7318cd730de745421c184ad89aeca5ea33d9cba471130220760e892cd78f190d18ae6d18d4e9f65865a0f1a6652229324f2c631d6a7afd63012103d14c088f9a2f63f02173be720c7ced7f0cc254d7dea3d5bb4cef1d8ccc610308000000"
+  }
+}
+```
+
+Example of a broadcast response:
+
+```json
+{
+  "hash": "019eec21c164a4181d9a57854ff16b39d2331ded50b749683d057778f618b891",
+  "transaction": {
+    "data": {
+      "chainId": "bitcoin",
+      "sender": "bc1qekphvuz20qvdhkzywfe29r9vvtwxrszvaxzmqm",
+      "recipient": "bc1q2e00eecxtjlvuzf6dpm4leqjd2pem0xkfggw8j",
+      "useMaxAmount": false,
+      "mode": "transfer",
+      "amount": "490000"
+    }
+  },
+  "status": {
+    "errors": [],
+    "warnings": []
+  }
+}
+```
+
+### Summary
+
+- **Transaction Intent**: Specify sender, recipient, and amount.
+- **PSBT Generation**: The Adamik API will generate the PSBT and automatically select the UTXOs for the transaction, as well as calculate the fees.
+- **Sign the PSBT**: Employ a compatible signer.
+- **Broadcast**: Submit the signed transaction back to the Adamik API, which will broadcast the transaction to the Bitcoin network.
+
+In case of any issues, please connect with us through our [Discord Server](https://discord.gg/gsZJR2JfMR) or directly through [GitHub](https://github.com/AdamikHQ).

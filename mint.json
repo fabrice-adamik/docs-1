@@ -1,0 +1,116 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "versions": ["current", "next"],
+  "name": "Adamik",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/blue.svg",
+    "href": "https://adamik.io"
+  },
+  "analytics": {
+    "gtm": {
+      "tagId": "GTM-PDZKXGD6"
+    },
+    "hotjar": {
+      "hjid": "5204260",
+      "hjsv": "6"
+    }
+  },
+  "favicon": "Adamik_symbol_flat_blue.svg",
+  "colors": {
+    "primary": "#4261F4",
+    "light": "#4261F4",
+    "dark": "#4261F4",
+    "anchors": {
+      "from": "#0D0D40",
+      "to": "#4261F4"
+    }
+  },
+  "metadata": {
+    "og:image": "https://adamik-public-media.s3.eu-north-1.amazonaws.com/Social+Media/bandeau.svg",
+    "og:title": "Adamik Documentation",
+    "og:description": "Streamline blockchain integration with Adamik’s powerful API tools. Access comprehensive guides, resources, and support to unlock seamless multichain connectivity. Fast, reliable, and easy to use — everything you need in one place."
+  },
+  "topbarCtaButton": {
+    "name": "Get API Key",
+    "url": "https://dashboard.adamik.io"
+  },
+  "topbarLinks": [
+    {
+      "name": "Discord Support",
+      "url": "https://discord.gg/gsZJR2JfMR"
+    }
+  ],
+  "topAnchor": {
+    "name": "Introduction",
+    "icon": "house"
+  },
+  "anchors": [
+    {
+      "name": "API Reference",
+      "icon": "code",
+      "url": "current/api-reference",
+      "version": "current",
+      "openapi": "/openapi.json"
+    },
+    {
+      "name": "API Reference",
+      "icon": "code",
+      "url": "next/api-reference",
+      "version": "next",
+      "openapi": "/openapi_next.json"
+    },
+    {
+      "name": "Guides and Tutorials",
+      "icon": "book",
+      "url": "guides"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Introduction",
+      "pages": [
+        "get_started/welcome",
+        "get_started/overview",
+        "get_started/quick_start",
+        "get_started/supported_chains",
+        "get_started/Build-VS-Buy",
+        "get_started/pricing_plans"
+      ]
+    },
+    {
+      "group": "API Overview",
+      "pages": [
+        "api_overview/introduction",
+        "api_overview/read_API_overview_and_interaction_flow",
+        "api_overview/write_API_overview_and_interaction_flow"
+      ]
+    },
+    {
+      "group": "Examples",
+      "pages": [
+        "guides/e2e-examples/using-Adamik-API-with-Ethereum",
+        "guides/e2e-examples/using-Adamik-API-with-TON",
+        "guides/e2e-examples/using-Adamik-API-with-Bitcoin",
+        "guides/e2e-examples/using-Adamik-API-with-StarkNet"
+      ]
+    },
+    {
+      "group": "Tutorials",
+      "pages": ["guides/tutorials/Bitcoin-Transaction-Crafting"]
+    }
+  ],
+  "footerSocials": {
+    "x": "https://twitter.com/adamik_io",
+    "github": "https://github.com/AdamikHQ",
+    "linkedin": "https://www.linkedin.com/company/adamik/",
+    "discord": "https://discord.gg/gsZJR2JfMR"
+  },
+  "search": {
+    "prompt": "Search Adamik docs..."
+  },
+  "feedback": {
+    "thumbsRating": true,
+    "raiseIssue": true
+  }
+}

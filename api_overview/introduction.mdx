@@ -1,0 +1,41 @@
+---
+icon: house
+---
+
+The Adamik API adheres to RPC principles, providing streamlined and predictable interactions for blockchain integration in cryptocurrency applications. It features resource-oriented URLs, accepts and returns JSON-encoded data, and uses standard HTTP methods and response codes.
+
+## Chain-Agnostic Philosophy
+
+The Adamik API is designed with a chain-agnostic approach, ensuring that developers do not need to handle specific blockchain logic within their codebase. This means that the API avoids endpoints tied exclusively to particular blockchain types or families. The focus is on delivering a unified interface that abstracts away the complexities of individual blockchains, enabling seamless integration across various chains without requiring chain-specific adaptations.
+
+## Focused Functionality
+
+Each API request processes single objects to ensure precise updates, supporting clear and straightforward blockchain interactions. This precision aligns with our goal of maintaining simplicity and clarity in blockchain integrations.
+
+## Authentication
+
+Access to the Adamik API requires an API key to authenticate requests. Include your API key in the Authorization header of each request using the following format:
+
+```
+Authorization: <your_api_key>
+```
+
+You can generate and manage your API key through the [Adamik Dashboard](https://dashboard.adamik.io).
+
+## Error Handling
+
+The API uses standard HTTP response codes to reflect the outcome of each request:
+
+- **2xx** — Success
+- **4xx** — Client-side errors (e.g., missing parameters, validation errors)
+- **5xx** — Server-side errors (rare, but indicate an issue with Adamik’s system)
+
+Error responses include clear messages and may provide error codes to aid debugging.
+
+## OpenAPI Specification
+
+Explore the complete API structure using the OpenAPI Specification (OAS). The OAS provides a comprehensive reference for all endpoints, parameters, and response formats. Access it via the [OpenAPI endpoint](../api-reference).
+
+## Versioning
+
+The Adamik API is continuously evolving. Our chain-agnostic approach ensures updates are compatible across all blockchain ecosystems, supporting flexible, scalable integrations.

@@ -1,0 +1,160 @@
+---
+icon: square-code
+---
+
+This guide demonstrates how to create, sign, and broadcast a transaction using the Adamik API along with the common Bitcoin library, `bitcoinjs-lib`.
+This tutorial is perfect for developers who want to integrate Adamik's features into their Bitcoin workflows, ensuring secure and efficient transaction management.
+
+## Prerequisites
+
+- **Node.js** and **npm** installed
+- Basic understanding of Bitcoin and transaction workflows
+- Familiarity with the `bitcoinjs` library
+
+## Step-by-Step Guide
+
+### 1. Setting Up the Environment
+
+Ensure you have the `bitcoinjs` library installed in your project:
+
+```bash
+npm install bitcoinjs-lib
+```
+
+In this example, we'll start with just the mnemonic and derive a typical HD wallet. For that, we'll require bip32 and bip39 libraries:
+
+```bash
+npm install bip32 bip39
+```
+
+Finally, because we'll be using deriving a Taproot account for this example, you'll also need a elyptic curve cryptographiy library (ECC):
+
+```bash
+npm install @bitcoinerlab/secp256k1
+```
+
+### 2. Writing the Script
+
+https://github.com/bitcoin/bips/blob/master/bip-0086.mediawiki
+
+Below is the script that handles the full transaction flow, from creating a wallet to broadcasting the signed transaction.
+
+```javascript
+import * as ecc from "@bitcoinerlab/secp256k1";
+import BIP32Factory from "bip32";
+import * as bip39 from "bip39";
+import * as bitcoin from "bitcoinjs-lib";
+import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
+
+bitcoin.initEccLib(ecc);
+
+const bip32 = BIP32Factory(ecc);
+
+// Replace with your wallet's mnemonic phrase
+const mnemonic = "";
+// Fill in your derivation path for Taproot (BIP-86)
+// This script is setup as if this account has 1 simple UTXO of more than 100000 sats
+const path = `m/86'/0'/0'/0/0`;
+const recipientAddress = ""; // recipient of your choice, sender if none
+const ADAMIK_API_KEY = ""; // Adamik API key
+
+async function main() {
+  // Create wallet using mnemonic phrase
+  const seed = await bip39.mnemonicToSeed(mnemonic);
+  const rootKey = bip32.fromSeed(seed);
+  const childNode = rootKey.derivePath(path);
+  const internalPubkey = toXOnly(childNode.publicKey);
+  const { address } = bitcoin.payments.p2tr({
+    internalPubkey,
+  });
+
+  console.log("public address of sender:", address);
+
+  // Prepare the transaction request
+  const requestBody = {
+    transaction: {
+      data: {
+        chainId: "bitcoin", // Target Bitcoin
+        mode: "transfer", // Simple tx
+        sender: address,
+        recipient: recipientAddress || address,
+        amount: "10000", // Transaction amount in satoshis
+      },
+    },
+  };
+
+  // Encode the transaction with Adamik API
+  const responseEncode = await fetch(
+    "https://api.adamik.io/api/bitcoin/transaction/encode",
+    {
+      method: "POST",
+      headers: {
+        Authorization: ADAMIK_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    }
+  );
+
+  const encodedData = await responseEncode.json();
+  console.log("encodedData:", encodedData);
+  const rawtx = encodedData.transaction.encoded;
+
+  // Create and sign the PSBT (Partially Signed Bitcoin Transaction)
+  const psbt = bitcoin.Psbt.fromHex(rawtx);
+  psbt.updateInput(0, {
+    tapInternalKey: internalPubkey,
+  });
+
+  const tweakedChildNode = childNode.tweak(
+    bitcoin.crypto.taggedHash("TapTweak", internalPubkey)
+  );
+  psbt.signTaprootInput(0, tweakedChildNode);
+
+  psbt.finalizeAllInputs();
+  const signedTransaction = psbt.extractTransaction().toHex();
+
+  // Prepare to broadcast the signed transaction
+  const sendTransactionBody = {
+    transaction: {
+      data: encodedData.transaction.data,
+      encoded: encodedData.transaction.encoded,
+      signature: signedTransaction,
+    },
+  };
+
+  // Broadcast the transaction using Adamik API
+  const responseBroadcast = await fetch(
+    "https://api.adamik.io/api/bitcoin/transaction/broadcast",
+    {
+      method: "POST",
+      headers: {
+        Authorization: ADAMIK_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sendTransactionBody),
+    }
+  );
+
+  const responseData = await responseBroadcast.json();
+  console.log("Transaction Result:", JSON.stringify(responseData));
+}
+
+main();
+```
+
+### 3. Explanation
+
+- **Wallet Creation**: The script begins by creating a wallet using a mnemonic phrase, which is crucial for managing private keys. Please note Adamik API doesn't have the custody of the assets.
+- **Transaction Encoding**: The transaction details are passed to the Adamik API, which translates them into a raw transaction to be signed.
+- **Signing and Broadcasting**: The transaction is then signed with the wallet's private key and finally broadcast to the Bitcoin network using the Adamik API.
+
+### 4. Troubleshooting
+
+- **Invalid API Key**: Ensure your Adamik API key is correct.
+- **Network Issues**: Verify network availability and Adamik API status.
+- **Security Note**: Never hardcode sensitive information like mnemonic phrases in your production environment.
+
+### 5. Get in Touch
+
+Connect with us through our [Discord Server](https://discord.gg/gsZJR2JfMR) or direclty through [GitHub](https://github.com/AdamikHQ).

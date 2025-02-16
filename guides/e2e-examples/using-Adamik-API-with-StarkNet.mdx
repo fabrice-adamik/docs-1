@@ -1,0 +1,170 @@
+---
+icon: square-code
+version: next
+---
+
+This guide demonstrates how to create, sign, and broadcast a transaction using the Adamik API with StarkNet. This tutorial is perfect for developers who want to leverage Adamik to power their StarkNet workflow, ensuring secure and efficient transaction management.
+
+## Prerequisites
+
+- **Node.js** and **npm** installed
+- Basic understanding of StarkNet blockchain and transaction workflows
+- Familiarity with StarkNet libraries
+
+## Step-by-Step Guide
+
+### 1. Setting Up the Environment
+
+Install the required dependencies:
+
+```bash
+npm install starknet
+```
+
+### 2. Writing the Script
+
+Below is the script that handles StarkNet transactions, including wallet deployment and transfers:
+
+```javascript
+import { ec } from "starknet";
+
+// Replace these with your actual values
+const walletPrivateKey = "YOUR_PRIVATE_KEY";
+const ADAMIK_API_KEY = "your-adamik-api-key"; // get it from https://dashboard.adamik.io
+const recipientAddress = "RECIPIENT_ADDRESS";
+
+async function main() {
+  // Generate public key from private key
+  const pubKey = ec.starkCurve.getStarkKey(walletPrivateKey);
+
+  // First, let's get our wallet address
+  const requestBodyAddressEncode = {
+    pubkey: pubKey,
+  };
+
+  // Fetch the wallet address from Adamik API
+  const responseAddressEncode = await fetch(
+    "https://api-staging.adamik.io/api/starknet/address/encode",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: ADAMIK_API_KEY,
+      },
+      body: JSON.stringify(requestBodyAddressEncode),
+    }
+  );
+
+  const addressEncode = await responseAddressEncode.json();
+  // Get the ArgentX wallet address
+  const senderAddress = addressEncode.addresses.find(
+    (address) => address.type === "argentx"
+  ).address;
+
+  // Prepare the transfer transaction
+  const requestBody = {
+    transaction: {
+      data: {
+        mode: "transfer", // Transaction type
+        senderAddress, // Our wallet address
+        recipientAddress, // Where we're sending to
+        amount: "200000000000000000", // Amount in wei (0.2 STRK in this example)
+      },
+    },
+  };
+
+  // Encode the transaction with Adamik API
+  const response = await fetch(
+    "https://api-staging.adamik.io/api/starknet/transaction/encode",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: ADAMIK_API_KEY,
+      },
+      body: JSON.stringify(requestBody),
+    }
+  );
+
+  const encodedData = await response.json();
+
+  // Check for encoding errors
+  if (encodedData.status.errors.length > 0) {
+    throw new Error(encodedData.status.errors[0].message);
+  }
+
+  // Sign the encoded transaction using StarkNet curve
+  const signature = ec.starkCurve.sign(
+    encodedData.transaction.encoded,
+    walletPrivateKey
+  );
+  const signatureHex = signature.toDERHex();
+
+  // Prepare the broadcast request
+  const broadcastTransactionBody = {
+    transaction: {
+      ...encodedData.transaction,
+      signature: signatureHex,
+    },
+  };
+
+  // Broadcast the signed transaction
+  const broadcastResponse = await fetch(
+    "https://api.adamik.io/api/starknet/transaction/broadcast",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: ADAMIK_API_KEY,
+      },
+      body: JSON.stringify(broadcastTransactionBody),
+    }
+  );
+
+  const responseData = await broadcastResponse.json();
+  console.log("Transaction Result:", JSON.stringify(responseData, null, 2));
+}
+
+main();
+```
+
+### 3. Explanation
+
+- **Key Generation**: The script uses the StarkNet curve to generate a public key from your private key.
+- **Address Encoding**: Before making a transfer, we need to get our wallet address using the Adamik API's address encode endpoint.
+- **Transaction Encoding**: The transaction details are passed to the Adamik API, which encodes the transaction specifically for StarkNet.
+- **Signing**: The encoded transaction is signed using StarkNet's signature scheme.
+- **Broadcasting**: The signed transaction is broadcast to the StarkNet network via the Adamik API.
+
+### 4. Deploying a Wallet
+
+If you need to deploy a new wallet, here's how:
+
+```javascript
+const deployWallet = async () => {
+  const pubKey = ec.starkCurve.getStarkKey(walletPrivateKey);
+
+  // Prepare deployment request
+  const requestBody = {
+    transaction: {
+      data: {
+        mode: "deployAccount",
+        type: "argentx", // Using ArgentX wallet type
+        senderPubKey: pubKey,
+      },
+    },
+  };
+
+  // Follow the same encode -> sign -> broadcast pattern as above
+  // ... (encoding, signing, and broadcasting steps remain the same)
+};
+```
+
+### 5. Troubleshooting
+
+- **Invalid Signature**: Ensure you're using the correct private key and StarkNet curve for signing.
+- **Gas Fees**: Make sure your wallet has enough funds to cover gas fees.
+
+### 6. Get in Touch
+
+Connect with us through our [Discord Server](https://discord.gg/gsZJR2JfMR) or directly through [GitHub](https://github.com/AdamikHQ).
