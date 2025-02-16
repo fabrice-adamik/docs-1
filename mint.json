@@ -1,20 +1,10 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "versions": ["current", "next"],
   "name": "Adamik",
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/blue.svg",
     "href": "https://adamik.io"
-  },
-  "analytics": {
-    "gtm": {
-      "tagId": "GTM-PDZKXGD6"
-    },
-    "hotjar": {
-      "hjid": "5204260",
-      "hjsv": "6"
-    }
   },
   "favicon": "Adamik_symbol_flat_blue.svg",
   "colors": {
@@ -29,7 +19,7 @@
   "metadata": {
     "og:image": "https://adamik-public-media.s3.eu-north-1.amazonaws.com/Social+Media/bandeau.svg",
     "og:title": "Adamik Documentation",
-    "og:description": "Streamline blockchain integration with Adamik’s powerful API tools. Access comprehensive guides, resources, and support to unlock seamless multichain connectivity. Fast, reliable, and easy to use — everything you need in one place."
+    "og:description": "Streamline blockchain integration with Adamik's powerful API tools. Access comprehensive guides, resources, and support to unlock seamless multichain connectivity. Fast, reliable, and easy to use — everything you need in one place."
   },
   "topbarCtaButton": {
     "name": "Get API Key",
