@@ -27,7 +27,7 @@
   },
   "topbarLinks": [
     {
-      "name": "Discord Support",
+      "name": "Reach out to Support",
       "url": "https://discord.gg/gsZJR2JfMR"
     }
   ],
@@ -39,16 +39,8 @@
     {
       "name": "API Reference",
       "icon": "code",
-      "url": "current/api-reference",
-      "version": "current",
+      "url": "api-reference",
       "openapi": "/openapi.json"
-    },
-    {
-      "name": "API Reference",
-      "icon": "code",
-      "url": "next/api-reference",
-      "version": "next",
-      "openapi": "/openapi_next.json"
     },
     {
       "name": "Guides and Tutorials",
@@ -97,7 +89,7 @@
     "discord": "https://discord.gg/gsZJR2JfMR"
   },
   "search": {
-    "prompt": "Search Adamik docs..."
+    "prompt": "Search docs..."
   },
   "feedback": {
     "thumbsRating": true,
