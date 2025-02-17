@@ -63,6 +63,7 @@
       "group": "API Overview",
       "pages": [
         "api_overview/introduction",
+        "api_overview/API_Architecture",
         "api_overview/read_API_overview_and_interaction_flow",
         "api_overview/write_API_overview_and_interaction_flow"
       ]
@@ -73,7 +74,8 @@
         "guides/e2e-examples/using-Adamik-API-with-Ethereum",
         "guides/e2e-examples/using-Adamik-API-with-TON",
         "guides/e2e-examples/using-Adamik-API-with-Bitcoin",
-        "guides/e2e-examples/using-Adamik-API-with-StarkNet"
+        "guides/e2e-examples/using-Adamik-API-with-StarkNet",
+        "guides/e2e-examples/using-Adamik-API-with-Cosmos"
       ]
     },
     {

@@ -1,0 +1,69 @@
+---
+title: "Meria API Architecture"
+description: "A comprehensive overview of Meria's API architecture and core components"
+icon: "cube"
+---
+
+# Meria API Architecture
+
+## Overview
+
+The Meria API is a robust and scalable blockchain integration layer that simplifies interactions with multiple blockchain networks. While staking is a core feature, Meria API is not just a staking API—it provides essential blockchain primitives such as balance retrieval, transaction management, and historical data access. These fundamental building blocks enable developers to build the base layer they need to support staking features on top.
+
+Each component of the API can be used as a self-serve option, depending on your tech stack and architectural decisions. This modular approach allows developers to choose the functionalities they need without unnecessary complexity.
+
+## Core Components
+
+### 1. Wallet Feature and Basic Transaction Management
+
+Meria API provides a robust mechanism for fetching account balances and managing transactions across blockchains, ensuring a seamless user experience.
+
+
+
+| Feature | Description | Endpoint |
+|---------|-------------|----------|
+| **Real-Time Balance Queries** | Retrieve wallet balances, including native balances, token balances, and staking balances | **GET** `/api/account/state` |
+| **Transaction Creation & Broadcasting** | Build and broadcast native transfer transactions with minimal effort | **Encode Transaction**<br/>`POST /api/transaction/encode`<br/>Modes:<br/>• transfer<br/>• tokenTransfer<br/><br/>**Broadcast Transaction**<br/>`POST /api/transaction/broadcast` |
+| **Transaction Status Tracking** | Monitor transaction states in real-time across multiple blockchain networks | **GET** `/api/transaction/details` |
+
+### 2. Staking Module
+
+The staking module enables delegation, rewards tracking, and unstaking, allowing applications to integrate staking functionalities effortlessly.
+
+
+
+| Feature | Description | Endpoint |
+|---------|-------------|----------|
+| **Validator Discovery** | Retrieve a list of eligible validators across supported PoS networks | **GET** `/api/chain/validators` |
+| **Delegation & Undelegation** | Stake or unstake assets in a single API request, streamlining the staking process | **POST** `/api/transaction/encode`<br/>Modes:<br/>• delegate<br/>• undelegate |
+| **Claim Rewards** | Automatically claim staking rewards, reducing complexity for users and applications | **POST** `/api/transaction/encode`<br/>Mode: claimRewards |
+| **Multi-Chain Staking Support** | Interact with over 40 PoS blockchains through a unified staking interface | **GET** `/api/chain/details` |
+
+### 3. Historical Data & Analytics
+
+The ability to track past transactions and staking activities is essential for transparency and auditability. The Historical Data Module provides structured access to past blockchain interactions.
+
+
+
+| Feature | Description | Endpoint |
+|---------|-------------|----------|
+| **Transaction History Retrieval** | Access detailed transaction logs without querying blockchain nodes directly | **GET** `/api/account/history` |
+| **Reward Monitoring** | Coming soon | - |
+
+## Conclusion
+
+The Meria API is more than just a staking API—it is a comprehensive blockchain interaction framework that provides the fundamental building blocks for:
+
+- Staking operations
+- Transaction management
+- Data retrieval
+
+By abstracting chain-specific complexities, it enables developers to focus on building high-quality staking applications without getting bogged down by blockchain intricacies.
+
+With its scalable architecture, unified API interface, and advanced security measures, Meria API empowers applications to seamlessly integrate staking and blockchain functionalities while ensuring:
+
+- Efficiency
+- Reliability
+- Future-proof compatibility
+
+

@@ -1,0 +1,201 @@
+---
+title: "Using Staking API with Cosmos"
+description: "Learn how to stake on Cosmos using the Staking API"
+icon: "cube"
+---
+
+# Staking on Cosmos with Staking API
+
+## Overview
+
+This guide demonstrates how to stake ATOM tokens on the Cosmos network using the Staking API. You'll learn how to query validators, create delegation transactions, and manage your staking positions.
+
+## Prerequisites
+
+- Node.js and npm installed
+- Basic understanding of Cosmos staking
+- Staking API key (get it from https://dashboard.staking.io)
+
+## Step-by-Step Guide
+
+### 1. Setting Up the Environment
+
+First, install the required dependencies:
+
+```bash
+npm install @cosmjs/stargate @cosmjs/proto-signing
+```
+
+### 2. Implementation
+
+```javascript
+import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
+
+// Replace with your wallet's mnemonic phrase
+const walletPhrase = "...";
+const API_KEY = "test_pk_1234567890abcdef";
+
+async function main() {
+  // Create wallet using mnemonic phrase
+  const wallet = await DirectSecp256k1HdWallet.fromMnemonic(walletPhrase);
+  const [account] = await wallet.getAccounts();
+
+  // 1. Query Validators
+  const validatorsResponse = await fetch(
+    "https://api.staking.io/api/cosmos/validators",
+    {
+      headers: {
+        Authorization: API_KEY,
+      },
+    }
+  );
+  const validators = await validatorsResponse.json();
+  console.log("Available Validators:", validators);
+
+  // 2. Prepare Delegation Transaction
+  const requestBody = {
+    transaction: {
+      data: {
+        chainId: "cosmos-hub-4",
+        mode: "delegate",
+        sender: account.address,
+        amount: "1000000", // 1 ATOM (in uatom)
+        validatorAddress: validators.validators[0].address, // Using first validator
+        fees: "0",
+        gas: "0",
+        memo: "",
+        format: "proto",
+        params: {
+          pubKey: account.pubkey,
+        },
+      },
+    },
+  };
+
+  // 3. Encode Transaction
+  const responseEncode = await fetch(
+    "https://api.staking.io/api/cosmos/transaction/encode",
+    {
+      method: "POST",
+      headers: {
+        Authorization: API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    }
+  );
+
+  const encodedData = await responseEncode.json();
+  console.log("Encoded Transaction:", encodedData);
+
+  // 4. Sign Transaction
+  const signature = await wallet.signDirect(
+    account.address,
+    encodedData.transaction.data
+  );
+
+  // 5. Broadcast Transaction
+  const broadcastBody = {
+    transaction: {
+      data: encodedData.transaction.data,
+      encoded: encodedData.transaction.encoded,
+      signature: signature,
+    },
+  };
+
+  const responseBroadcast = await fetch(
+    "https://api.staking.io/api/cosmos/transaction/broadcast",
+    {
+      method: "POST",
+      headers: {
+        Authorization: API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(broadcastBody),
+    }
+  );
+
+  const result = await responseBroadcast.json();
+  console.log("Staking Result:", result);
+}
+
+main();
+```
+
+## API Reference
+
+| Feature | Description | Endpoint |
+|---------|-------------|----------|
+| **Validator Discovery** | Get list of Cosmos validators | **GET** `/api/cosmos/validators` |
+| **Delegation Transaction** | Create staking position | **POST** `/api/transaction/encode`<br/>Mode: delegate |
+| **Transaction Broadcasting** | Submit signed transaction | **POST** `/api/transaction/broadcast` |
+
+## Common Operations
+
+### Query Delegation Status
+
+```javascript
+const delegationResponse = await fetch(
+  `https://api.staking.io/api/cosmos/account/${account.address}/delegations`,
+  {
+    headers: {
+      Authorization: API_KEY,
+    },
+  }
+);
+const delegations = await delegationResponse.json();
+```
+
+### Claim Rewards
+
+```javascript
+const claimRequestBody = {
+  transaction: {
+    data: {
+      chainId: "cosmos-hub-4",
+      mode: "claimRewards",
+      sender: account.address,
+      validatorAddress: validators.validators[0].address,
+      // ... other parameters
+    },
+  },
+};
+// Then encode and broadcast as shown above
+```
+
+### Undelegate
+
+```javascript
+const undelegateRequestBody = {
+  transaction: {
+    data: {
+      chainId: "cosmos-hub-4",
+      mode: "undelegate",
+      sender: account.address,
+      amount: "1000000", // 1 ATOM
+      validatorAddress: validators.validators[0].address,
+      // ... other parameters
+    },
+  },
+};
+// Then encode and broadcast as shown above
+```
+
+## Error Handling
+
+- Always check the response status and error messages
+- Ensure sufficient funds for delegation and fees
+- Verify validator status before delegation
+- Handle network timeouts and retries appropriately
+
+## Security Considerations
+
+- Never hardcode mnemonic phrases
+- Store API keys securely
+- Validate all input parameters
+- Implement proper error handling
+- Use secure connections (HTTPS)
+
+## Get Support
+
+Join our [Discord community](https://discord.gg/gsZJR2JfMR) or visit our [GitHub repository](https://github.com/StakingHQ) for additional support and resources. 
