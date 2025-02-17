@@ -2,10 +2,9 @@
 icon: bolt
 ---
 
-## Get your first API key 🔑
+## Get your API key 🔑
 
-Start your Adamik journey by generating your personal API key. It's your ticket to the Multichain universe.
-[Sign up here](https://dashboard.adamik.io).
+Use our test API key to get started and reach out to us to get your personal key ([contact form](https://dashboard.adamik.io)).
 
 ## Create your first read request 🔍
 
@@ -13,36 +12,36 @@ Dive into blockchain data with your first read request. Fetch data seamlessly wi
 
 <CodeGroup>
 
-```cURL Get Balance Ethereum {6-7}
+```cURL Get Staking Balance {6-7}
 curl --request POST \
   --url https://api.adamik.io/api/account/state \
   --header 'Content-Type: application/json' \
   --header 'Authorization: <YOUR-API-KEY>' \
   --data '{
-  "chainId": "ethereum",
-  "accountId": "0xfc43f5f9dd45258b3aff31bdbe6561d97e8b71de"
+  "chainId": "cosmoshub",
+  "accountId": "cosmos1g84934jpu3v5de5yqukkkhxmcvsw3u2ajxvpdl"
 }'
 ```
 
-```cURL Get Balance Bitcoin {6-7}
+```cURL Get List of Validators {6-7}
 curl --request POST \
-  --url https://api.adamik.io/api/account/state \
+  --url https://api.adamik.io/api/staking/validators \
   --header 'Content-Type: application/json' \
   --header 'Authorization: <YOUR-API-KEY>' \
   --data '{
-  "chainId": "bitcoin",
-  "accountId": "bc1qekphvuz20qvdhkzywfe29r9vvtwxrszvaxzmqm"
+  "chainId": "osmosis",
+  "status": "active"
 }'
 ```
 
-```cURL Get Balance Tron {6-7}
+```cURL Get Claimable Rewards {6-7}
 curl --request POST \
-  --url https://api.adamik.io/api/account/state \
+  --url https://api.adamik.io/api/staking/rewards \
   --header 'Content-Type: application/json' \
   --header 'Authorization: <YOUR-API-KEY>' \
   --data '{
-  "chainId": "tron",
-  "accountId": "TVKG4gUar24bpAVrDv4GSzyDRtPkjPkogL"
+  "chainId": "starknet",
+  "accountId": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
 }'
 ```
 
@@ -53,42 +52,6 @@ curl --request POST \
 Make your mark on the blockchain. Learn to submit write requests for seamless transaction handling. Whether transferring on Ethereum or Bitcoin, delegating on Cosmos, or claiming rewards on dYdX, the Adamik API simplifies crafting your transactions.
 
 <CodeGroup>
-
-```cURL Transfer Ethereum {8-9, 12}
-curl --request POST \
-  --url https://api.adamik.io/api/transaction/encode \
-  --header 'Authorization: <YOUR-API-KEY>' \
-  --header 'Content-Type: application/json' \
-  --data '{
-  "transaction": {
-    "data": {
-      "chainId": "ethereum",
-      "mode": "transfer",
-      "senders": ["0x3f5CE5FBFe3E9af3971dD833D26bA9b5C936f0bE"],
-      "recipients": ["0xd8da6bf26964af9d7eed9e03e53415d37aa96045"],
-      "amount": "12345600000"
-    }
-  }
-}'
-```
-
-```cURL Transfer Bitcoin {8-9, 12}
-curl --request POST \
-  --url https://api.adamik.io/api/transaction/encode \
-  --header 'Authorization: <YOUR-API-KEY>' \
-  --header 'Content-Type: application/json' \
-  --data '{
-  "transaction": {
-    "data": {
-      "chainId": "bitcoin",
-      "mode": "transfer",
-      "sender": "bc1pdvagvvtvs3k35zxq7hp86x6cgp5kl6np786y50p7dj2m394rhrwq236ryc",
-      "recipient": "bc1qekphvuz20qvdhkzywfe29r9vvtwxrszvaxzmqm",
-      "amount": "1"
-    }
-  }
-}'
-```
 
 ```cURL Delegate Cosmos {8-9, 12-13}
 curl --request POST \
@@ -123,6 +86,42 @@ curl --request POST \
       "recipient": "",
       "validatorAddress": "dydxvaloper1mwhwf9rqh64ktr8t8xnz37nhg7vvy42ec56jwe",
       "useMaxAmount": true
+    }
+  }
+}'
+```
+
+```cURL Transfer Ethereum {8-9, 12}
+curl --request POST \
+  --url https://api.adamik.io/api/transaction/encode \
+  --header 'Authorization: <YOUR-API-KEY>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "transaction": {
+    "data": {
+      "chainId": "ethereum",
+      "mode": "transfer",
+      "senders": ["0x3f5CE5FBFe3E9af3971dD833D26bA9b5C936f0bE"],
+      "recipients": ["0xd8da6bf26964af9d7eed9e03e53415d37aa96045"],
+      "amount": "12345600000"
+    }
+  }
+}'
+```
+
+```cURL Transfer Bitcoin {8-9, 12}
+curl --request POST \
+  --url https://api.adamik.io/api/transaction/encode \
+  --header 'Authorization: <YOUR-API-KEY>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "transaction": {
+    "data": {
+      "chainId": "bitcoin",
+      "mode": "transfer",
+      "sender": "bc1pdvagvvtvs3k35zxq7hp86x6cgp5kl6np786y50p7dj2m394rhrwq236ryc",
+      "recipient": "bc1qekphvuz20qvdhkzywfe29r9vvtwxrszvaxzmqm",
+      "amount": "1"
     }
   }
 }'

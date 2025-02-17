@@ -2,11 +2,11 @@
 icon: telescope
 ---
 
-Before exploring the detailed specifications and API references, review these high-level principles for an overview of the API's capabilities and workflow.
+Before exploring the detailed specifications and API references, review these high-level principles for an overview of the Staking API's capabilities and workflow.
 
 ## API Categories
 
-The Adamik API is organized into four main categories:
+The Meria Staking API is organized into four main categories:
 
 - **Chain**: Query blockchain network information and validators
 - **Account**: Retrieve account states, balances, and history
@@ -16,24 +16,24 @@ The Adamik API is organized into four main categories:
 ```mermaid
 sequenceDiagram
     participant CLIENT as Client App
-    participant ADAMIK as Adamik API
+    participant STAKING as Staking API
 
     %% Chain & Network Info %%
     Note right of CLIENT: Chain Information
-    CLIENT->>ADAMIK: Query chain details/validators
-    ADAMIK->>CLIENT: Return chain data
+    CLIENT->>STAKING: Query chain details/validators
+    STAKING->>CLIENT: Return chain data
 
     %% Account Operations %%
     Note right of CLIENT: Account Operations
-    CLIENT->>ADAMIK: Get account state/tokens/history
-    ADAMIK->>CLIENT: Return account information
+    CLIENT->>STAKING: Get account state/tokens/history
+    STAKING->>CLIENT: Return account information
 
     %% Transaction Lifecycle %%
     Note right of CLIENT: Transaction Lifecycle
-    CLIENT->>ADAMIK: Encode transaction
-    ADAMIK->>CLIENT: Return encoded transaction
-    CLIENT->>ADAMIK: Broadcast transaction
-    ADAMIK->>CLIENT: Return transaction result
+    CLIENT->>STAKING: Encode transaction
+    STAKING->>CLIENT: Return encoded transaction
+    CLIENT->>STAKING: Broadcast transaction
+    STAKING->>CLIENT: Return transaction result
 ```
 
 <CardGroup cols={3}>
