@@ -35,7 +35,7 @@ Two options for broadcasting transactions:
 sequenceDiagram
     participant USER as End-User
     participant CLIENT as Client-App
-    participant ADAMIK as Adamik API
+    participant ADAMIK as Staking API
 
     Note over USER,ADAMIK: 1. Transaction Construction
     USER->>CLIENT: Set transaction data
@@ -57,9 +57,9 @@ sequenceDiagram
 
 The API supports various transaction types across chains:
 
+- **Staking Operations**: Delegate, redelegate, undelegate, and claim rewards
 - **Native Transfers**: Send native blockchain currency
 - **Token Transfers**: Handle ERC20 and other token standards
-- **Staking Operations**: Delegate, redelegate, undelegate, and claim rewards
 
 <Info>
   Each chain may support different transaction types. Use the `/api/chains`
@@ -75,9 +75,10 @@ The Write API adapts to each blockchain's capabilities:
   "write": {
     "transaction": {
       "type": {
+        "staking": true, // Staking operations
         "native": true, // Native currency transfers
         "tokens": true, // Token operations
-        "staking": true // Staking operations
+       
       },
       "field": {
         "memo": true // Optional transaction memo support

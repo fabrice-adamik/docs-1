@@ -31,32 +31,32 @@ The **Read API** provides endpoints to retrieve blockchain data across multiple 
 sequenceDiagram
     participant USER as End-User
     participant APP as Client App
-    participant ADAMIK as Adamik API
+    participant STAKING as Staking API
 
-    Note over USER,ADAMIK: Chain Information
+    Note over USER,STAKING: Chain Information
     USER->>APP: Query chain data
-    APP->>ADAMIK: /api/chains
-    ADAMIK->>APP: Supported chains & features
+    APP->>STAKING: /api/chains
+    STAKING->>APP: Supported chains & features
 
     USER->>APP: Get validators
-    APP->>ADAMIK: /api/{chainId}/validators
-    ADAMIK->>APP: Validator list & details
+    APP->>STAKING: /api/{chainId}/validators
+    STAKING->>APP: Validator list & details
 
-    Note over USER,ADAMIK: Account Operations
+    Note over USER,STAKING: Account Operations
     USER->>APP: View account details
-    APP->>ADAMIK: /api/{chainId}/account/{accountId}/state
-    ADAMIK->>APP: Account state & balances
+    APP->>STAKING: /api/{chainId}/account/{accountId}/state
+    STAKING->>APP: Account state & balances
 
-    APP->>ADAMIK: /api/{chainId}/account/{accountId}/state/tokens
-    ADAMIK->>APP: Token balances
+    APP->>STAKING: /api/{chainId}/account/{accountId}/state/staking
+    STAKING->>APP: Staking balances & positions
 
-    APP->>ADAMIK: /api/{chainId}/account/{accountId}/history
-    ADAMIK->>APP: Transaction history
+    APP->>STAKING: /api/{chainId}/account/{accountId}/history
+    STAKING->>APP: Transaction history
 
-    Note over USER,ADAMIK: Transaction Details
+    Note over USER,STAKING: Transaction Details
     USER->>APP: View transaction
-    APP->>ADAMIK: /api/{chainId}/transaction/{transactionId}
-    ADAMIK->>APP: Transaction details
+    APP->>STAKING: /api/{chainId}/transaction/{transactionId}
+    STAKING->>APP: Transaction details
 ```
 
 <Info>

@@ -2,40 +2,64 @@
 icon: house
 ---
 
-The Adamik API adheres to RPC principles, providing streamlined and predictable interactions for blockchain integration in cryptocurrency applications. It features resource-oriented URLs, accepts and returns JSON-encoded data, and uses standard HTTP methods and response codes.
+## Introduction
+The Meria Staking API follows RPC principles, providing streamlined and predictable interactions for staking integrations across multiple blockchain networks. It features resource-oriented URLs, processes JSON-encoded data, and utilizes standard HTTP methods and response codes to ensure smooth and efficient staking operations.
 
-## Chain-Agnostic Philosophy
+## Chain-Agnostic Staking
+The Meria Staking API is designed with a chain-agnostic approach, ensuring that developers do not need to manage blockchain-specific staking logic within their codebase. This means:
 
-The Adamik API is designed with a chain-agnostic approach, ensuring that developers do not need to handle specific blockchain logic within their codebase. This means that the API avoids endpoints tied exclusively to particular blockchain types or families. The focus is on delivering a unified interface that abstracts away the complexities of individual blockchains, enabling seamless integration across various chains without requiring chain-specific adaptations.
+- No need to adapt your code for different staking protocols.
+
+- No reliance on blockchain-specific APIs—one unified interface for all Proof-of-Stake (PoS) chains.
+
+- Simplified delegation, rewards management, and unstaking across multiple networks.
+
+By abstracting away chain-specific complexities, our API enables seamless staking integration across 40+ PoS blockchains without requiring custom logic for each chain.
 
 ## Focused Functionality
-
 Each API request processes single objects to ensure precise updates, supporting clear and straightforward blockchain interactions. This precision aligns with our goal of maintaining simplicity and clarity in blockchain integrations.
+
 
 ## Authentication
 
-Access to the Adamik API requires an API key to authenticate requests. Include your API key in the Authorization header of each request using the following format:
+Access to the Meria API requires an API key to authenticate requests. Include your API key in the Authorization header of each request using the following format:
 
 ```
-Authorization: <your_api_key>
+Authorization: <your API Key>
 ```
 
-You can generate and manage your API key through the [Adamik Dashboard](https://dashboard.adamik.io).
+Here is a test key you can use for testing.
+You can also request your own personal key by contacting us.
 
 ## Error Handling
+The API follows standard HTTP response codes to indicate request outcomes:
 
-The API uses standard HTTP response codes to reflect the outcome of each request:
+✅ 2xx — Success (staking transaction submitted, rewards claimed, balance retrieved).
 
-- **2xx** — Success
-- **4xx** — Client-side errors (e.g., missing parameters, validation errors)
-- **5xx** — Server-side errors (rare, but indicate an issue with Adamik’s system)
+⚠️ 4xx — Client-side errors (e.g., missing parameters, insufficient stake balance, invalid validator address).
 
-Error responses include clear messages and may provide error codes to aid debugging.
+🚨 5xx — Server-side errors (rare, but indicate an issue with Meria's staking infrastructure).
+
+All error responses include clear messages and error codes to aid debugging.
 
 ## OpenAPI Specification
+Explore the full API structure using the OpenAPI Specification (OAS), which provides:
 
-Explore the complete API structure using the OpenAPI Specification (OAS). The OAS provides a comprehensive reference for all endpoints, parameters, and response formats. Access it via the [OpenAPI endpoint](../api-reference).
+🔍 Detailed endpoint documentation for staking actions.
+
+📄 Supported parameters and response formats.
+
+🔗 Comprehensive request examples for real-world staking scenarios.
+
+Access it via our OpenAPI endpoint for a deep dive into all available staking functionalities.
 
 ## Versioning
+The Meria Staking API is continuously evolving, ensuring that updates are:
 
-The Adamik API is continuously evolving. Our chain-agnostic approach ensures updates are compatible across all blockchain ecosystems, supporting flexible, scalable integrations.
+✅ Backward-compatible across all supported staking networks.
+
+✅ Optimized for security and efficiency in staking transactions.
+
+✅ Scalable to support new PoS blockchains as they emerge.
+
+Our chain-agnostic approach ensures future-proof integrations, allowing developers to stake across multiple ecosystems without major codebase modifications.
