@@ -1,10 +1,10 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Adamik",
+  "name": "Meria",
   "logo": {
     "dark": "/logo/dark.svg",
-    "light": "/logo/blue.svg",
-    "href": "https://adamik.io"
+    "light": "/logo/light.svg",
+    "href": "https://meria.io"
   },
   "favicon": "Adamik_symbol_flat_blue.svg",
   "colors": {
