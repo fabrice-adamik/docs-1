@@ -12,7 +12,8 @@ Dive into blockchain data with your first read request. Fetch data seamlessly wi
 
 <CodeGroup>
 
-```cURL Get Staking Balance {6-7}
+
+```cURL Get Available Balance {6-7}
 curl --request POST \
   --url https://api.adamik.io/api/account/state \
   --header 'Content-Type: application/json' \
@@ -53,6 +54,42 @@ Make your mark on the blockchain. Learn to submit write requests for seamless tr
 
 <CodeGroup>
 
+```cURL Transfer Ethereum {8-9, 12}
+curl --request POST \
+  --url https://api.adamik.io/api/transaction/encode \
+  --header 'Authorization: <YOUR-API-KEY>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "transaction": {
+    "data": {
+      "chainId": "ethereum",
+      "mode": "transfer",
+      "senders": ["0x3f5CE5FBFe3E9af3971dD833D26bA9b5C936f0bE"],
+      "recipients": ["0xd8da6bf26964af9d7eed9e03e53415d37aa96045"],
+      "amount": "12345600000"
+    }
+  }
+}'
+```
+
+```cURL Transfer Bitcoin {8-9, 12}
+curl --request POST \
+  --url https://api.adamik.io/api/transaction/encode \
+  --header 'Authorization: <YOUR-API-KEY>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "transaction": {
+    "data": {
+      "chainId": "bitcoin",
+      "mode": "transfer",
+      "sender": "bc1pdvagvvtvs3k35zxq7hp86x6cgp5kl6np786y50p7dj2m394rhrwq236ryc",
+      "recipient": "bc1qekphvuz20qvdhkzywfe29r9vvtwxrszvaxzmqm",
+      "amount": "1"
+    }
+  }
+}'
+```
+
 ```cURL Delegate Cosmos {8-9, 12-13}
 curl --request POST \
   --url https://api.adamik.io/api/transaction/encode \
@@ -91,45 +128,4 @@ curl --request POST \
 }'
 ```
 
-```cURL Transfer Ethereum {8-9, 12}
-curl --request POST \
-  --url https://api.adamik.io/api/transaction/encode \
-  --header 'Authorization: <YOUR-API-KEY>' \
-  --header 'Content-Type: application/json' \
-  --data '{
-  "transaction": {
-    "data": {
-      "chainId": "ethereum",
-      "mode": "transfer",
-      "senders": ["0x3f5CE5FBFe3E9af3971dD833D26bA9b5C936f0bE"],
-      "recipients": ["0xd8da6bf26964af9d7eed9e03e53415d37aa96045"],
-      "amount": "12345600000"
-    }
-  }
-}'
-```
-
-```cURL Transfer Bitcoin {8-9, 12}
-curl --request POST \
-  --url https://api.adamik.io/api/transaction/encode \
-  --header 'Authorization: <YOUR-API-KEY>' \
-  --header 'Content-Type: application/json' \
-  --data '{
-  "transaction": {
-    "data": {
-      "chainId": "bitcoin",
-      "mode": "transfer",
-      "sender": "bc1pdvagvvtvs3k35zxq7hp86x6cgp5kl6np786y50p7dj2m394rhrwq236ryc",
-      "recipient": "bc1qekphvuz20qvdhkzywfe29r9vvtwxrszvaxzmqm",
-      "amount": "1"
-    }
-  }
-}'
-```
-
 </CodeGroup>
-
-## Fork the Adamik App and deep-dive into Adamik's API
-
-Explore Adamik's capabilities hands-on. Fork the [Adamik App](https://github.com/AdamikHQ/adamik-app) and build your own multichain application.
-Dive deeper into our [API Documentation](../api-reference) and unlock your project's potential.

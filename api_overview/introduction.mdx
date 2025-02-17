@@ -3,54 +3,54 @@ icon: house
 ---
 
 ## Introduction
-The Meria Staking API follows RPC principles, providing streamlined and predictable interactions for staking integrations across multiple blockchain networks. It features resource-oriented URLs, processes JSON-encoded data, and utilizes standard HTTP methods and response codes to ensure smooth and efficient staking operations.
+
+Our API follows RPC principles, providing streamlined and predictable interactions for staking integrations across multiple blockchain networks. It features resource-oriented URLs, processes JSON-encoded data, and utilizes standard HTTP methods and response codes.
 
 ## Chain-Agnostic Staking
-The Meria Staking API is designed with a chain-agnostic approach, ensuring that developers do not need to manage blockchain-specific staking logic within their codebase. This means:
 
-- No need to adapt your code for different staking protocols.
+Our API is designed with a chain-agnostic approach, ensuring that developers do not need to manage blockchain-specific staking logic within their codebase:
 
-- No reliance on blockchain-specific APIs—one unified interface for all Proof-of-Stake (PoS) chains.
+- Write once, deploy everywhere - no need to adapt your code for different staking protocols
+- Single unified interface for all Proof-of-Stake (PoS) chains
+- Simplified delegation, rewards management, and unstaking across multiple networks
 
-- Simplified delegation, rewards management, and unstaki
-Access to the Meria API requires an API key to authenticate requests. Include your API key in the Authorization header of each request using the following format:
+By abstracting away chain-specific complexities, our API enables seamless staking integration across 40+ PoS blockchains.
 
+## Authentication
+
+Access to the API requires an API key to authenticate requests. Include your API key in the Authorization header:
+
+```bash
+Authorization: <your-api-key>
 ```
-Authorization: <your API Key>
-```
-
-Here is a test key you can use for testing.
-You can also request your own personal key by contacting us.
 
 ## Error Handling
-The API follows standard HTTP response codes to indicate request outcomes:
 
-✅ 2xx — Success (staking transaction submitted, rewards claimed, balance retrieved).
+The API follows standard HTTP response codes:
 
-⚠️ 4xx — Client-side errors (e.g., missing parameters, insufficient stake balance, invalid validator address).
-
-🚨 5xx — Server-side errors (rare, but indicate an issue with Meria's staking infrastructure).
+- ✅ 2xx — Success (staking transaction submitted, rewards claimed, balance retrieved)
+- ⚠️ 4xx — Client-side errors (missing parameters, insufficient balance, invalid address)
+- 🚨 5xx — Server-side errors (rare, but indicate an infrastructure issue)
 
 All error responses include clear messages and error codes to aid debugging.
 
-## OpenAPI Specification
-Explore the full API structure using the OpenAPI Specification (OAS), which provides:
 
-🔍 Detailed endpoint documentation for staking actions.
-
-📄 Supported parameters and response formats.
-
-🔗 Comprehensive request examples for real-world staking scenarios.
-
-Access it via our OpenAPI endpoint for a deep dive into all available staking functionalities.
 
 ## Versioning
-The Meria Staking API is continuously evolving, ensuring that updates are:
 
-✅ Backward-compatible across all supported staking networks.
+Our API is continuously evolving while maintaining:
 
-✅ Optimized for security and efficiency in staking transactions.
+- ✅ Backward compatibility
+- ✅ Security optimizations
+- ✅ Support for new PoS blockchains
 
-✅ Scalable to support new PoS blockchains as they emerge.
+The chain-agnostic approach ensures future-proof integrations, allowing you to stake across multiple ecosystems without major codebase modifications.
 
-Our chain-agnostic approach ensures future-proof integrations, allowing developers to stake across multiple ecosystems without major codebase modifications.
+<div className="flex mt-8">
+  <div className="flex-1">
+    <a href="build-vs-buy">← Build VS Buy</a>
+  </div>
+  <div className="flex-1 text-right">
+    <a href="meria-api-architecture">Meria API Architecture →</a>
+  </div>
+</div>
