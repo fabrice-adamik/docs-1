@@ -2,18 +2,18 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Meria",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg",
+    "dark": "/logo/meria_white.svg",
+    "light": "/logo/meria_black.svg",
     "href": "https://meria.io"
   },
   "favicon": "Adamik_symbol_flat_blue.svg",
   "colors": {
-    "primary": "#4261F4",
-    "light": "#4261F4",
-    "dark": "#4261F4",
+    "primary": "#FF592C",
+    "light": "#FF592C",
+    "dark": "#FF592C",
     "anchors": {
-      "from": "#0D0D40",
-      "to": "#4261F4"
+      "from": "#D77B62",
+      "to": "#FF592C"
     }
   },
   "metadata": {

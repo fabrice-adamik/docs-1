@@ -12,38 +12,22 @@ Dive into blockchain data with your first read request. Fetch data seamlessly wi
 
 <CodeGroup>
 
-
-```cURL Get Available Balance {6-7}
-curl --request POST \
-  --url https://api.adamik.io/api/account/state \
-  --header 'Content-Type: application/json' \
-  --header 'Authorization: <YOUR-API-KEY>' \
-  --data '{
-  "chainId": "cosmoshub",
-  "accountId": "cosmos1g84934jpu3v5de5yqukkkhxmcvsw3u2ajxvpdl"
-}'
+```cURL Get Available Balance
+curl --request GET \
+  --url https://api.adamik.io/api/cosmoshub/account/cosmos1g84934jpu3v5de5yqukkkhxmcvsw3u2ajxvpdl/state \
+  --header 'Authorization: <YOUR-API-KEY>'
 ```
 
-```cURL Get List of Validators {6-7}
-curl --request POST \
-  --url https://api.adamik.io/api/staking/validators \
-  --header 'Content-Type: application/json' \
-  --header 'Authorization: <YOUR-API-KEY>' \
-  --data '{
-  "chainId": "osmosis",
-  "status": "active"
-}'
+```cURL Get List of Validators
+curl --request GET \
+  --url https://api.adamik.io/api/osmosis/validators \
+  --header 'Authorization: <YOUR-API-KEY>'
 ```
 
-```cURL Get Claimable Rewards {6-7}
-curl --request POST \
-  --url https://api.adamik.io/api/staking/rewards \
-  --header 'Content-Type: application/json' \
-  --header 'Authorization: <YOUR-API-KEY>' \
-  --data '{
-  "chainId": "starknet",
-  "accountId": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
-}'
+```cURL Get Claimable Rewards
+curl --request GET \
+  --url 'https://api.adamik.io/api/cosmoshub/account/cosmos1g84934jpu3v5de5yqukkkhxmcvsw3u2ajxvpdl/state?include=staking' \
+  --header 'Authorization: <YOUR-API-KEY>'
 ```
 
 </CodeGroup>
@@ -54,33 +38,29 @@ Make your mark on the blockchain. Learn to submit write requests for seamless tr
 
 <CodeGroup>
 
-```cURL Transfer Ethereum {8-9, 12}
+```cURL Transfer Ethereum
 curl --request POST \
-  --url https://api.adamik.io/api/transaction/encode \
+  --url https://api.adamik.io/api/ethereum/transaction/encode \
   --header 'Authorization: <YOUR-API-KEY>' \
-  --header 'Content-Type: application/json' \
   --data '{
   "transaction": {
     "data": {
-      "chainId": "ethereum",
       "mode": "transfer",
-      "senders": ["0x3f5CE5FBFe3E9af3971dD833D26bA9b5C936f0bE"],
-      "recipients": ["0xd8da6bf26964af9d7eed9e03e53415d37aa96045"],
+      "sender": "0x3f5CE5FBFe3E9af3971dD833D26bA9b5C936f0bE",
+      "recipient": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
       "amount": "12345600000"
     }
   }
 }'
 ```
 
-```cURL Transfer Bitcoin {8-9, 12}
+```cURL Transfer Bitcoin
 curl --request POST \
-  --url https://api.adamik.io/api/transaction/encode \
+  --url https://api.adamik.io/api/bitcoin/transaction/encode \
   --header 'Authorization: <YOUR-API-KEY>' \
-  --header 'Content-Type: application/json' \
   --data '{
   "transaction": {
     "data": {
-      "chainId": "bitcoin",
       "mode": "transfer",
       "sender": "bc1pdvagvvtvs3k35zxq7hp86x6cgp5kl6np786y50p7dj2m394rhrwq236ryc",
       "recipient": "bc1qekphvuz20qvdhkzywfe29r9vvtwxrszvaxzmqm",
@@ -90,15 +70,13 @@ curl --request POST \
 }'
 ```
 
-```cURL Delegate Cosmos {8-9, 12-13}
+```cURL Delegate Cosmos
 curl --request POST \
-  --url https://api.adamik.io/api/transaction/encode \
+  --url https://api.adamik.io/api/cosmoshub/transaction/encode \
   --header 'Authorization: <YOUR-API-KEY>' \
-  --header 'Content-Type: application/json' \
   --data '{
   "transaction": {
     "data": {
-      "chainId": "cosmoshub",
       "mode": "delegate",
       "sender": "cosmos1g84934jpu3v5de5yqukkkhxmcvsw3u2ajxvpdl",
       "recipient": "",
@@ -109,18 +87,16 @@ curl --request POST \
 }'
 ```
 
-```cURL Claim Rewards Dydx {8-9, 12-13}
+```cURL Claim Rewards Dydx
 curl --request POST \
-  --url https://api.adamik.io/api/transaction/encode \
+  --url https://api.adamik.io/api/dydx/transaction/encode \
   --header 'Authorization: <YOUR-API-KEY>' \
-  --header 'Content-Type: application/json' \
   --data '{
   "transaction": {
     "data": {
-      "chainId": "dydx",
       "mode": "claimRewards",
       "sender": "dydx1yvuhqg73fdzxvam9sj7mazfa38gpn7uleyzn78",
-      "recipient": "",
+      "recipient": "dydx1yvuhqg73fdzxvam9sj7mazfa38gpn7uleyzn78",
       "validatorAddress": "dydxvaloper1mwhwf9rqh64ktr8t8xnz37nhg7vvy42ec56jwe",
       "useMaxAmount": true
     }
