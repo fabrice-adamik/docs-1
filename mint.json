@@ -4,9 +4,9 @@
   "logo": {
     "dark": "/logo/meria_white.svg",
     "light": "/logo/meria_black.svg",
-    "href": "https://meria.io"
+    "href": "https://meria.com"
   },
-  "favicon": "Adamik_symbol_flat_blue.svg",
+  "favicon": "favicon.svg",
   "colors": {
     "primary": "#FF592C",
     "light": "#FF592C",
