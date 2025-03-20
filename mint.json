@@ -40,7 +40,7 @@
       "name": "API Reference",
       "icon": "code",
       "url": "api-reference",
-      "openapi": "/openapi.json"
+      "openapi": "https://api.adamik.io/openapi.json"
     },
     {
       "name": "Guides and Tutorials",
